@@ -97,15 +97,26 @@ class Usuario:
         self.contrasena = contrasena
     
     def iniciar_sesion(self, usuario: str, contrasena: str):
-        return self.nombre_usuario == usuario and self.contrasena == contrasena
+        if self.nombre_usuario == usuario and self.contrasena == contrasena:
+            print(f"Inicio de sesión exitoso para {self.nombre_usuario}.")
+            return True
+        else:
+            print("Las credenciales son incorrectas.")
+            return False
 
 class Administrador(Usuario):
     def gestionar_usuarios(self):
-        return "Gestionando usuarios del sistema."
+        if self.nombre_usuario == "admin" and self.contrasena == "1234":
+            print("Gestionando usuarios del sistema.")
+        else:
+            print("No tienes permisos para gestionar usuarios.")
 
 class Cliente(Usuario):
     def realizar_compra(self):
-        return "Realizando una compra en la tienda online."
+        if self.nombre_usuario =="cliente1"  and self.contrasena == "abcd":
+            print("Compra realizada con éxito.")
+        else:
+            print("No puedes realizar compras sin iniciar sesión correctamente.")
     
     
 empleado1 = Empleado("Carlos", 3000, "Ventas")
@@ -134,11 +145,10 @@ print(refrigerador1.encender())
 print(refrigerador1.regular_temperatura())
 
 admin1 = Administrador("admin", "1234")
-print(f"Inicio de sesión: {admin1.iniciar_sesion('admin', '1234')}")
-print(admin1.gestionar_usuarios())
+admin1.iniciar_sesion("admin", "1234")
+admin1.gestionar_usuarios()
 
 cliente1 = Cliente("cliente1", "abcd")
-print(f"Inicio de sesión: {cliente1.iniciar_sesion('cliente1', 'abcd')}")
-print(cliente1.realizar_compra())
-   
+cliente1.iniciar_sesion("cliente1", "abcd")
+cliente1.realizar_compra()
    
