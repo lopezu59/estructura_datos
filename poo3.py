@@ -22,7 +22,7 @@ class Gerente(Empleado):
         return f"{self.nombre} está supervisando a su equipo."
 
 class Desarrollador(Empleado):
-    lenaguaje = str
+    lenguaje = str
 
     def __init__(self, nombre: str, salario: float, departamento: str, lenguaje: str):
         super().__init__(nombre, salario, departamento)
