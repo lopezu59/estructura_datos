@@ -2,7 +2,6 @@ class Empleado:
     nombre= str
     salario = float
     departamento = str
-    equipo = list
     
     def __init__(self, nombre: str, salario: float, departamento: str):
         self.nombre = nombre
@@ -13,6 +12,8 @@ class Empleado:
         return f"{self.nombre} está trabajando en {self.departamento}."
 
 class Gerente(Empleado):
+    equipo = list
+
     def __init__(self, nombre: str, salario: float, departamento: str, equipo: list):
         super().__init__(nombre, salario, departamento)
         self.equipo = equipo
@@ -21,6 +22,8 @@ class Gerente(Empleado):
         return f"{self.nombre} está supervisando a su equipo."
 
 class Desarrollador(Empleado):
+    lenaguaje = str
+
     def __init__(self, nombre: str, salario: float, departamento: str, lenguaje: str):
         super().__init__(nombre, salario, departamento)
         self.lenguaje = lenguaje
@@ -33,6 +36,9 @@ class FiguraGeometrica:
         pass
 
 class Triangulo(FiguraGeometrica):
+    base = float
+    altura = float
+
     def __init__(self, base: float, altura: float):
         self.base = base
         self.altura = altura
@@ -41,6 +47,8 @@ class Triangulo(FiguraGeometrica):
         return (self.base * self.altura) / 2
 
 class Cuadrado(FiguraGeometrica):
+    lado = float    
+
     def __init__(self, lado: float):
         self.lado = lado
     
@@ -48,6 +56,10 @@ class Cuadrado(FiguraGeometrica):
         return self.lado ** 2
 
 class Electrodomestico:
+    marca = str
+    modelo = str
+    consumo = str
+
     def __init__(self, marca: str, modelo: str, consumo: str):
         self.marca = marca
         self.modelo = modelo
@@ -57,6 +69,8 @@ class Electrodomestico:
         return f"{self.marca} {self.modelo} está encendido."
 
 class Lavadora(Electrodomestico):
+    capacidad = float
+
     def __init__(self, marca: str, modelo: str, consumo: str, capacidad: float):
         super().__init__(marca, modelo, consumo)
         self.capacidad = capacidad
@@ -65,6 +79,8 @@ class Lavadora(Electrodomestico):
         return f"Lavadora {self.marca} iniciando ciclo de lavado."
 
 class Refrigerador(Electrodomestico):
+    tiene_congelador = bool
+
     def __init__(self, marca: str, modelo: str, consumo: str, tiene_congelador: bool):
         super().__init__(marca, modelo, consumo)
         self.tiene_congelador = tiene_congelador
@@ -73,6 +89,9 @@ class Refrigerador(Electrodomestico):
         return f"Regulando temperatura del refrigerador {self.marca}."
 
 class Usuario:
+    nombre_usuario = str
+    contraseña = str
+    
     def __init__(self, nombre_usuario: str, contrasena: str):
         self.nombre_usuario = nombre_usuario
         self.contrasena = contrasena
@@ -121,4 +140,5 @@ print(admin1.gestionar_usuarios())
 cliente1 = Cliente("cliente1", "abcd")
 print(f"Inicio de sesión: {cliente1.iniciar_sesion('cliente1', 'abcd')}")
 print(cliente1.realizar_compra())
+   
    
