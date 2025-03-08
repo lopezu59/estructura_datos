@@ -1,4 +1,8 @@
 class Empleado:
+    nombre= str
+    salario = float
+    departamento = str
+    
     def __init__(self, nombre: str, salario: float, departamento: str):
         self.nombre = nombre
         self.salario = salario
