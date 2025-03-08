@@ -2,6 +2,7 @@ class Empleado:
     nombre= str
     salario = float
     departamento = str
+    equipo = list
     
     def __init__(self, nombre: str, salario: float, departamento: str):
         self.nombre = nombre
