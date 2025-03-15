@@ -233,11 +233,11 @@ class ListaTareas:
             previo = actual
             actual = actual.siguiente
 
-    print("Tarea no encontrada.")                
+        print("Tarea no encontrada.")                
 
 lista_tareas = ListaTareas()
 
-while (opcion := input("1.Agregar  2.Eliminar  3.Mostrar  4.Buscar  5.Completar  6.Salir Elige: ")) != "6":
+while (opcion := input("1.Agregar  2.Eliminar  3.Mostrar  4.Buscar  5.Completar  6.Salir: ")) != "6":
     if opcion == "1":
         lista_tareas.agregar_tarea(Tarea(input("Descripción: "), int(input("Prioridad: ")), int(input("Fecha: "))))
     elif opcion == "2":
