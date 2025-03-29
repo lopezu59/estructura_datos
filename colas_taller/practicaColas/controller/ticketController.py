@@ -28,7 +28,7 @@ class TicketController:
         print(f"Turno {ticket.name} agregado con prioridad {ticket.priority_attention}")  
 
 
-#it allow the ticketNext to show us the next one and delete the element before
+#permite que ticketNext nos muestre el siguiente elemento y borre el elemento anterior 
     def dequeue(self) -> Ticket:
         if self.is_empty():
              return None
