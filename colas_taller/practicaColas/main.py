@@ -22,7 +22,7 @@ def crear_turnos_batch(turnos: List[Ticket]):
     declined = []
 
     for shift in turnos:
-        if turno.type in ticketTypes:
+        if shift.type in ticketTypes:
             add_queue(shift, ticketTypes)
             aggregates.append(shift.model_dump())
         else:
