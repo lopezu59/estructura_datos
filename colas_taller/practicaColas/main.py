@@ -17,7 +17,7 @@ ticketTypes = {
 
 # Endpoint para crear un turno
 @app.post("/ticketCreateBatch")
-def crear_turnos_batch(turnos: List[Ticket]):
+def create_shifts_batch(turnos: List[Ticket]):
     aggregates = []
     declined = []
 
@@ -36,7 +36,7 @@ def crear_turnos_batch(turnos: List[Ticket]):
 
 # Endpoint para obtener el siguiente turno
 @app.get("/ticketNext")
-def obtener_siguiente_turno():
+def get_next_shift():
     highest_priority_ticket = None
     highest_priority_type = None
 
@@ -65,7 +65,7 @@ def obtener_siguiente_turno():
     
 # Endpoint para listar los turnos en cola por el tipo de turno
 @app.get("/ticketList")
-def listar_turnos_cola():
+def list_tail_shifts():
 
     queue = []
 
