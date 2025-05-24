@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Gestor de Tareas Inteligente</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+
+<body>
+   
+    <div class="paper"></div>
+
+    <div class="clip">
+        <!-- Cejas -->
+        <div class="eyebrow left"></div>
+        <div class="eyebrow right"></div>
+
+        <!-- Ojos -->
+        <div class="eye">
+            <div class="pupil"></div>
+        </div>
+        <div class="eye">
+            <div class="pupil"></div>
+        </div>
+    </div>
+
+    <div class="popup" id="clippyPopup" style="display: none;">
+
+    </div>
+    <div style="position: relative; display: inline-block;">
+        <input type="image" class="help-icon" onclick="startDemo()" src="/static/img/14.png" alt="Ayuda" />
+        <div class="popover">¿Necesitas ayuda?</div>
+    </div>
+
+
+    <div class="container">
+        <h1>Gestor de Tareas con IA</h1>
+
+        <!-- Formulario -->
+        <form id="formulario-tarea">
+            <input type="text" id="inputTarea" placeholder="Escribe tu tarea aquí..." required />
+            <button type="submit">Agregar</button>
+        </form>
+
+        <!-- Columnas de prioridades -->
+        <div class="tablero">
+            <div class="columna alta">
+                <h2>🔴 Alta</h2>
+                <div id="tareas-alta"></div>
+            </div>
+            <div class="columna media">
+                <h2>🟡 Media</h2>
+                <div id="tareas-media"></div>
+            </div>
+            <div class="columna baja">
+                <h2>🟢 Baja</h2>
+                <div id="tareas-baja"></div>
+            </div>
+        </div>
+    </div>
+
+</body>
+<script src="/static/script.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+</html>

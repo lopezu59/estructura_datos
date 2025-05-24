@@ -1,0 +1,547 @@
+* {
+    font-family: Georgia, 'Times New Roman', Times, serif;
+}
+
+body {
+    font-family: 'Segoe UI', sans-serif;
+    background-color: #f0f2f5;
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    max-width: 1000px;
+    margin: 2rem auto;
+    padding: 1rem;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+    text-align: center;
+    margin-bottom: 1.5rem;
+    color: #333;
+}
+
+form {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 2rem;
+}
+
+form input {
+    width: 60%;
+    padding: 0.7rem;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 6px 0 0 6px;
+    outline: none;
+}
+
+form button {
+    padding: 0.7rem 1.2rem;
+    font-size: 1rem;
+    background-color: #0077cc;
+    color: white;
+    border: none;
+    border-radius: 0 6px 6px 0;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+form button:hover {
+    background-color: #005fa3;
+}
+
+.tablero {
+    display: flex;
+    gap: 1rem;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+
+.columna {
+    flex: 1;
+    min-width: 280px;
+    background-color: #fafafa;
+    padding: 1rem;
+    border-radius: 10px;
+    border: 2px solid #e0e0e0;
+}
+
+.columna h2 {
+    margin-top: 0;
+    color: #444;
+}
+
+.columna div p {
+    background-color: #ffffff;
+    padding: 0.6rem;
+    margin: 0.5rem 0;
+    border-radius: 6px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.button-form {
+    transition-duration: 0.4s;
+    border-radius: 69px 69px 69px 69px;
+    border: 2px solid #ff0000;
+    color: #ff0000;
+}
+
+
+
+
+.button-form:hover {
+    background-color: #fe0202;
+    color: white;
+    border: none;
+    border-radius: 69px 69px 69px 69px;
+    cursor: pointer;
+}
+
+/* bot Animaciones */
+body {
+    perspective: 1000px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+}
+
+.clip {
+    position: absolute;
+    bottom: 10vmin;
+    left: 10vmin;
+    width: 9vmin;
+    height: 12vmin;
+    border: 1vmin solid #aaa;
+    border-top: 0;
+    border-radius: 0 0 10vmin 10vmin;
+    box-sizing: border-box;
+    overflow: visible;
+    /* para que pupilas se muevan sin cortarse */
+}
+
+.clip::before {
+    content: "";
+    display: block;
+    position: absolute;
+    top: -15vmin;
+    left: -1vmin;
+    width: 7.75vmin;
+    height: 15vmin;
+    border: 1vmin solid #aaa;
+    border-bottom: 0;
+    border-radius: 10vmin 10vmin 0 0;
+    box-sizing: border-box;
+    z-index: 1;
+}
+
+.clip::after {
+    content: "";
+    display: block;
+    position: absolute;
+    top: -2.5vmin;
+    left: 0.25vmin;
+    width: 6.5vmin;
+    height: 9vmin;
+    border: 1vmin solid #aaa;
+    border-top: 0;
+    border-radius: 0 0 10vmin 10vmin;
+    box-sizing: border-box;
+    z-index: 1;
+}
+
+.eye {
+    position: absolute;
+    top: -75%;
+    left: -35%;
+    width: 75%;
+    height: 35%;
+    background: white;
+    border-radius: 50%;
+    z-index: 1;
+    box-shadow:
+        inset 0 1.25vmin 0 -0.5vmin #aaa,
+        inset 0 0 1vmin #aaa;
+    overflow: hidden;
+    /* para que pupilas no se salgan */
+    animation: blink 6s infinite;
+    transform-origin: center center;
+}
+
+.eye+.eye {
+    left: 45%;
+}
+
+.eye::before {
+    content: "";
+    display: block;
+    position: absolute;
+    top: -20%;
+    width: 100%;
+    height: 90%;
+    border-radius: 50%;
+    box-shadow: -0.25vmin -1vmin 0 -0.25vmin black;
+}
+
+.eye+.eye::before {
+    box-shadow: 0.25vmin -1vmin 0 -0.25vmin black;
+}
+
+/* Pupila negra dentro del ojo */
+.pupil {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 30%;
+    height: 60%;
+    background: black;
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    transition: transform 0.1s ease-out;
+}
+
+.paper {
+    width: 18vmin;
+    height: 24vmin;
+    background: #f8f8d0;
+    background-image:
+        linear-gradient(to right, transparent 15%, #f64 0 16%, transparent 0),
+        repeating-linear-gradient(transparent 0 9%, #6ba 0 9.25%);
+    position: absolute;
+    transform: rotateY(25deg) rotateX(75deg) rotateZ(-30deg);
+    bottom: 2vmin;
+    left: 5vmin;
+
+}
+
+.popup {
+    position: absolute;
+    bottom: 35vmin;
+    left: 20vmin;
+    width: 30vmin;
+    padding: 2vmin;
+    background: #ffc;
+    border-radius: 1vmin;
+    border: 0.375vmin solid #666;
+    font-size: 3vmin;
+    font-family: Tahoma, "Courier New", Courier, sans-serif;
+    line-height: 1.25;
+}
+
+.popup::before {
+    content: "";
+    display: block;
+    position: absolute;
+    top: 100%;
+    left: 10%;
+    width: 6vmin;
+    height: 6vmin;
+    border-left: 0.375vmin solid #666;
+    background-image: linear-gradient(-45deg, transparent 50%, #666 0 54%, #ffc 0);
+    transform: skew(-30deg);
+}
+
+@keyframes blink {
+
+    0%,
+    90%,
+    100% {
+        transform: scaleY(1);
+    }
+
+    92%,
+    95% {
+        transform: scaleY(0.1);
+    }
+}
+
+.eyebrow {
+    position: absolute;
+    width: 60%;
+    height: 10%;
+    background: #444;
+    border-radius: 50% / 100%;
+    z-index: 2;
+    transform-origin: center center;
+    transition: transform 0.4s ease;
+    /* transición suave para cambios */
+}
+
+/* Posiciones (más juntas) */
+.eyebrow.left {
+    top: -80%;
+    left: -18%;
+    /* antes -25% */
+}
+
+.eyebrow.right {
+    top: -80%;
+    left: 38%;
+    /* antes 42% */
+}
+
+/* Animación base para ceja izquierda (clase neutral) */
+.clip.neutral .eyebrow.left {
+    animation: raise-eyebrow 6s ease-in-out infinite;
+}
+
+/* Ceja derecha en neutral sin animación */
+.clip.neutral .eyebrow.right {
+    animation: none;
+}
+
+/* Animaciones para expresiones */
+.clip.surprised .eyebrow.left {
+    animation: raise-left-eyebrow 0.4s ease forwards;
+}
+
+.clip.surprised .eyebrow.right {
+    animation: raise-right-eyebrow 0.4s ease forwards;
+}
+
+.clip.angry .eyebrow.left {
+    animation: angry-left 0.4s ease forwards;
+}
+
+.clip.angry .eyebrow.right {
+    animation: angry-right 0.4s ease forwards;
+}
+
+.clip.sad .eyebrow.left,
+.clip.sad .eyebrow.right {
+    animation: sad-eyebrow 0.4s ease forwards;
+}
+
+.clip.curious .eyebrow.left {
+    animation: curious-left-eyebrow 0.4s ease forwards;
+}
+
+.clip.confused .eyebrow.left {
+    animation: confused-left 0.4s ease forwards;
+}
+
+.clip.confused .eyebrow.right {
+    animation: confused-right 0.4s ease forwards;
+}
+
+.clip.excited .eyebrow.left,
+.clip.excited .eyebrow.right {
+    animation: excited-eyebrows 0.4s ease forwards;
+}
+
+/* Animaciones individuales */
+@keyframes raise-eyebrow {
+
+    0%,
+    80%,
+    100% {
+        transform: rotate(0deg) translateY(0);
+    }
+
+    40% {
+        transform: rotate(-15deg) translateY(-1.5vmin);
+    }
+}
+
+@keyframes raise-left-eyebrow {
+    0% {
+        transform: rotate(0deg) translateY(0);
+    }
+
+    100% {
+        transform: rotate(-25deg) translateY(-1.5vmin);
+    }
+}
+
+@keyframes raise-right-eyebrow {
+    0% {
+        transform: rotate(0deg) translateY(0);
+    }
+
+    100% {
+        transform: rotate(-25deg) translateY(-1.5vmin);
+    }
+}
+
+@keyframes angry-left {
+    0% {
+        transform: rotate(0deg) translateY(0);
+    }
+
+    100% {
+        transform: rotate(15deg) translateY(0.5vmin);
+    }
+}
+
+@keyframes angry-right {
+    0% {
+        transform: rotate(0deg) translateY(0);
+    }
+
+    100% {
+        transform: rotate(-15deg) translateY(0.5vmin);
+    }
+}
+
+@keyframes sad-eyebrow {
+    0% {
+        transform: rotate(0deg) translateY(0);
+    }
+
+    100% {
+        transform: rotate(0deg) translateY(0.8vmin);
+    }
+}
+
+@keyframes curious-left-eyebrow {
+    0% {
+        transform: rotate(0deg) translateY(0);
+    }
+
+    100% {
+        transform: rotate(-20deg) translateY(-1.5vmin);
+    }
+}
+
+@keyframes confused-left {
+    0% {
+        transform: rotate(0deg) translateY(0);
+    }
+
+    100% {
+        transform: rotate(-20deg) translateY(-1.2vmin);
+    }
+}
+
+@keyframes confused-right {
+    0% {
+        transform: rotate(0deg) translateY(0);
+    }
+
+    100% {
+        transform: rotate(20deg) translateY(0.2vmin);
+    }
+}
+
+@keyframes excited-eyebrows {
+    0% {
+        transform: rotate(0deg) translateY(0);
+    }
+
+    100% {
+        transform: rotate(-10deg) translateY(-2vmin);
+    }
+}
+
+@keyframes raise-right-eyebrow-solo {
+
+    0%,
+    80%,
+    100% {
+        transform: rotate(0deg) translateY(0);
+    }
+
+    40% {
+        transform: rotate(-15deg) translateY(-1.5vmin);
+    }
+}
+
+.clip.raise-right .eyebrow.right {
+    animation: raise-right-eyebrow-solo 6s infinite ease-in-out;
+}
+
+.clip.neutral .eyebrow.left {
+    animation: raise-eyebrow 6s infinite ease-in-out;
+}
+
+.clip.neutral .eyebrow.right {
+    animation: none;
+}
+
+@keyframes dance {
+
+    0%,
+    100% {
+        transform: translateX(0) rotate(0deg);
+    }
+
+    25% {
+        transform: translateX(-0.8vmin) rotate(-5deg);
+    }
+
+    50% {
+        transform: translateX(0.8vmin) rotate(5deg);
+    }
+
+    75% {
+        transform: translateX(-0.8vmin) rotate(-5deg);
+    }
+}
+
+.clip.dancing {
+    animation: dance 1s ease-in-out infinite;
+}
+
+@keyframes dance-move {
+
+    0%,
+    100% {
+        transform: translate(0, 0) rotate(0deg);
+    }
+
+    25% {
+        transform: translate(2px, -2px) rotate(5deg);
+    }
+
+    50% {
+        transform: translate(-2px, 2px) rotate(-5deg);
+    }
+
+    75% {
+        transform: translate(2px, 2px) rotate(3deg);
+    }
+}
+
+/* icono*/
+.help-icon {
+    width: 40px;
+    height: 40px;
+    cursor: pointer;
+    vertical-align: middle;
+    border-radius: 8px;
+    border: none;
+    background: transparent;
+    padding: 0;
+    position: relative;
+    left: 10px;
+}
+
+.popover {
+    display: none;
+    position: absolute;
+    top: 45px;
+    left: 0;
+    background: #fff;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    padding: 8px 16px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    font-size: 14px;
+    z-index: 10;
+    white-space: nowrap;
+}
+
+.help-icon:hover+.popover {
+    display: block;
+}
+
+/* Opcional: para que el popover se oculte al salir */
+.popover:hover {
+    display: block;
+}
