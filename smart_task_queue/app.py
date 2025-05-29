@@ -1,10 +1,11 @@
 from flask import Flask, request, jsonify, render_template
-from flask import Flask, request, jsonify
 from task_classifier import classify_task
-from queues import task_queues
-from queues import load_all_queues, save_all_queues
+from queues import task_queue, save_queue, load_queue
 
 app = Flask(__name__)
+
+# Cargar tareas al iniciar
+load_queue()
 
 @app.route('/')
 def index():
@@ -13,14 +14,13 @@ def index():
 @app.route('/add-task', methods=['POST'])
 def add_task():
     data = request.get_json()
-    task = data.get('task', '')
+    task = data.get('task', '').strip()
     if not task:
         return jsonify({'error': 'No task provided'}), 400
 
     priority = classify_task(task)
-    task_queues[priority].enqueue(task)
-
-    save_all_queues()  # Guardar cada vez que agregas tarea
+    task_queue.enqueue(task, priority)
+    save_queue()
 
     return jsonify({
         'message': 'Task added successfully',
@@ -30,25 +30,21 @@ def add_task():
 
 @app.route('/queues', methods=['GET'])
 def get_queues():
-    return jsonify({
-        'Alta': task_queues['Alta'].to_list(),
-        'Media': task_queues['Media'].to_list(),
-        'Baja': task_queues['Baja'].to_list()
-    })
+    # Clasificar tareas por prioridad para enviarlas al frontend
+    organized = {'Alta': [], 'Media': [], 'Baja': []}
+    for item in task_queue.to_list():
+        organized[item['priority']].append(item['task'])
+    return jsonify(organized)
 
 @app.route('/dequeue/<priority>', methods=['POST'])
 def dequeue_task(priority):
-    priority = priority.capitalize()
-    if priority not in task_queues:
-        return jsonify({'error': 'Invalid priority level'}), 400
+    removed = task_queue.dequeue(priority.capitalize())
+    if removed:
+        save_queue()
+        return jsonify({'message': 'Tarea eliminada correctamente', 'task': removed['task']})
+    else:
+        return jsonify({'error': 'No hay tareas en esa cola'}), 404
 
-    task = task_queues[priority].dequeue()
-    if task is None:
-        return jsonify({'message': f'No tasks in {priority} queue'}), 200
-
-    save_all_queues()  # Guardar al eliminar la primera tarea de la cola
-
-    return jsonify({'message': f'Task removed from {priority} queue', 'task': task})
 
 @app.route('/remove-task', methods=['POST'])
 def remove_task():
@@ -56,14 +52,12 @@ def remove_task():
     priority = data.get('priority', '').capitalize()
     task_desc = data.get('task', '')
 
-    if priority not in task_queues:
-        return jsonify({'error': 'Invalid priority level'}), 400
-    if not task_desc:
-        return jsonify({'error': 'No task description provided'}), 400
+    if not task_desc or not priority:
+        return jsonify({'error': 'Missing task or priority'}), 400
 
-    removed = task_queues[priority].remove(task_desc)
+    removed = task_queue.remove(task_desc)
     if removed:
-        save_all_queues()  # Guardar cambios
+        save_queue()
         return jsonify({'message': 'Task removed successfully', 'task': task_desc})
     else:
         return jsonify({'error': 'Task not found in queue'}), 404
