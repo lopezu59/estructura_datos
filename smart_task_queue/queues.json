@@ -1,12 +1,30 @@
-{
-  "Alta": [
-    "urgente"
-  ],
-  "Media": [
-    "estudiar"
-  ],
-  "Baja": [
-    "quien sabe",
-    "alta"
-  ]
-}
+[
+  {
+    "task": "ffhb}",
+    "priority": "Baja"
+  },
+  {
+    "task": "ugente",
+    "priority": "Baja"
+  },
+  {
+    "task": "revisar el carro",
+    "priority": "Media"
+  },
+  {
+    "task": "leer libro}",
+    "priority": "Media"
+  },
+  {
+    "task": "ordenar libros",
+    "priority": "Baja"
+  },
+  {
+    "task": "entregar proyecto hoy lo antes posible",
+    "priority": "Alta"
+  },
+  {
+    "task": "mañana tengo que entregar solicitud de beca",
+    "priority": "Alta"
+  }
+]
