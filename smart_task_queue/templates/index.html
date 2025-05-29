@@ -47,15 +47,16 @@
         <!-- Columnas de prioridades -->
         <div class="tablero">
             <div class="columna alta">
-                <h2>🔴 Alta</h2>
+                <h2>🔴 Alta</h2><button class="fifo-button fifo-alta" onclick="dequeueFIFO('Alta')">Eliminar tarea mas antigua</button>
                 <div id="tareas-alta"></div>
+               
             </div>
             <div class="columna media">
-                <h2>🟡 Media</h2>
+                <h2>🟡 Media</h2><button class="fifo-button fifo-media" onclick="dequeueFIFO('Media')">Eliminar tarea mas antigua</button>
                 <div id="tareas-media"></div>
             </div>
             <div class="columna baja">
-                <h2>🟢 Baja</h2>
+                <h2>🟢 Baja</h2><button class="fifo-button fifo-baja" onclick="dequeueFIFO('Baja')">Eliminar tarea mas antigua</button>
                 <div id="tareas-baja"></div>
             </div>
         </div>
