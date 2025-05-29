@@ -1,18 +1,33 @@
-// Función para mostrar tareas desde backend
+// Mostrar tareas desde el backend
 async function mostrarTareas() {
     const response = await fetch('/queues');
     if (!response.ok) {
         console.error("Error al obtener las tareas");
         return;
     }
+
     const data = await response.json();
 
-    document.getElementById("tareas-alta").innerHTML = data.Alta.map(t => `<p>${t} <button class="button-form" onclick="eliminarTarea('Alta', '${t.replace(/'/g, "\\'")}')">Eliminar</button></p>`).join("");
-    document.getElementById("tareas-media").innerHTML = data.Media.map(t => `<p>${t} <button class="button-form" onclick="eliminarTarea('Media', '${t.replace(/'/g, "\\'")}')">Eliminar</button></p>`).join("");
-    document.getElementById("tareas-baja").innerHTML = data.Baja.map(t => `<p>${t} <button class="button-form" onclick="eliminarTarea('Baja', '${t.replace(/'/g, "\\'")}')">Eliminar</button></p>`).join("");
+    // Limpiar contenedores primero
+    document.getElementById("tareas-alta").innerHTML = "";
+    document.getElementById("tareas-media").innerHTML = "";
+    document.getElementById("tareas-baja").innerHTML = "";
+
+    // Mostrar tareas en la sección correspondiente
+    for (const prioridad in data) {
+        data[prioridad].forEach(tarea => {
+            const tareaHTML = `
+                <p>
+                    ${tarea}
+                    <button class="button-form" onclick="confirmarEliminar('${prioridad}', '${tarea}')">❌</button>
+                </p>
+            `;
+            document.getElementById(`tareas-${prioridad.toLowerCase()}`).innerHTML += tareaHTML;
+        });
+    }
 }
 
-// Evento submit del formulario para enviar tarea y actualizar vista
+// Agregar nueva tarea
 document.getElementById("formulario-tarea").addEventListener("submit", async function (e) {
     e.preventDefault();
     const input = document.getElementById("inputTarea");
@@ -29,42 +44,67 @@ document.getElementById("formulario-tarea").addEventListener("submit", async fun
 
     if (response.ok) {
         input.value = "";
-        await mostrarTareas();
+        await mostrarTareas();  // Refrescar la vista
     } else {
         alert("Error: " + data.error);
     }
 });
 
-// Función para eliminar tarea
-async function eliminarTarea(prioridad, tarea) {
+// Confirmar con SweetAlert y eliminar
+function confirmarEliminar(prioridad, tarea) {
     Swal.fire({
-        title: "Estas seguro?",
-        text: "No podra revertirse!",
+        title: "¿Estás seguro?",
+        text: "No podrás deshacer esto.",
         icon: "warning",
         showCancelButton: true,
         confirmButtonColor: "#3085d6",
         cancelButtonColor: "#d33",
-        confirmButtonText: "Eliminar",
-        cancelButtonText: "Cancelar"
-    }).then(async (result) => {
+        confirmButtonText: "Sí, eliminar"
+    }).then((result) => {
         if (result.isConfirmed) {
-            // Llamada para eliminar la tarea
-            const response = await fetch('/remove-task', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ priority: prioridad, task: tarea })
-            });
-            const data = await response.json();
-
-            if (data.error) {
-                Swal.fire("Error", data.error, "error");
-            } else {
-                Swal.fire("Eliminado!", "Se a eliminado tu tarea con exito", "success");
-                mostrarTareas(); // refrescar lista
-            }
+            eliminarTarea(prioridad, tarea);
         }
     });
 }
+
+// Eliminar tarea del backend
+function eliminarTarea(prioridad, tarea) {
+    fetch('/remove-task', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ priority: prioridad, task: tarea })
+    })
+        .then(response => response.json())
+        .then(data => {
+            if (data.error) {
+                Swal.fire("Error", data.error, "error");
+            } else {
+                Swal.fire("Eliminado", "La tarea fue eliminada", "success");
+                mostrarTareas();
+            }
+        });
+}
+
+function dequeueFIFO(prioridad) {
+    fetch(`/dequeue/${prioridad}`, {
+        method: 'POST',
+    })
+        .then(response => response.json())
+        .then(data => {
+            if (data.error) {
+                Swal.fire("Vacío", data.error, "info");
+            } else {
+                Swal.fire("Eliminado", `Se eliminó: ${data.task}`, "success");
+                mostrarTareas();  // Refresca las tareas
+            }
+        })
+        .catch(error => {
+            console.error("Error al hacer dequeue:", error);
+            Swal.fire("Error", "Ocurrió un error al eliminar la tarea", "error");
+        });
+}
+
+
 
 // Mostrar tareas al cargar la página
 window.onload = mostrarTareas;
@@ -165,14 +205,14 @@ function startDemo() {
     const popup = document.getElementById('clippyPopup');
 
     const mensajes = [
-        "¡Hola! Soy Clippy. Bienvenido a tu asistente inteligente.",
-        "Aquí puedes crear tareas nuevas en el cuadro superior.",
-        "Las tareas se clasifican automáticamente según su prioridad.",
-        "Puedes verlas en las columnas: Alta, Media y Baja.",
-        "intenta poner palabras como 'Urgente' o 'Importante' para tareas altas.",
-        "para prioridad media, puedes usar 'repasar' o 'estudiar'.",
-        "y para baja, palabras como 'revisar' o 'leer'.",
-        "¡Y eso es todo! Vamos a mantenerte organizado 🧠✨"
+        "¡Hola! Soy Clippy, tu asistente inteligente 🧠",
+        "Aquí puedes crear tareas nuevas escribiéndolas arriba.",
+        "Las tareas se clasifican automáticamente por prioridad: Alta, Media o Baja.",
+        "Puedes eliminarlas una por una o usar los botones FIFO para eliminar la primera tarea en cada categoría.",
+        "Usa palabras como 'urgente', 'importante', o 'repasar' para que el sistema detecte la prioridad.",
+        "Revisa tus colas de tareas a la derecha y mantenlas organizadas.",
+        "Recuerda: las tareas más antiguas se eliminan primero si usas el botón FIFO ⏳",
+        "¡Vamos a ponerte al día con todo! 📋💪"
     ];
     let index = 0;
 
@@ -197,10 +237,3 @@ function startDemo() {
         }
     }, 3500);
 }
-
-
-
-
-
-
-
