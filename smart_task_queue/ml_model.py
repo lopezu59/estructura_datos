@@ -16,8 +16,8 @@ def entrenar_modelo():
     prioridades = data['prioridad']
 
     modelo = Pipeline([
-        ('tfidf', TfidfVectorizer()),
-        ('clf', MultinomialNB())
+        ('tfidf', TfidfVectorizer()), # Convierte texto a vectores
+        ('clf', MultinomialNB()) # utliliza teorema de bayes probabilidad en base de eventos ocurridos
     ])
     modelo.fit(tareas, prioridades)
     joblib.dump(modelo, MODEL_PATH)
