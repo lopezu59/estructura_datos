@@ -1,64 +1,97 @@
 import json
 
+class Node:
+    def __init__(self, task:str, priority:str):
+        self.task = task
+        self.priority = priority
+        self.next = None
+
 class Queue:
-    def __init__(self) -> None:
-        self.front = 0
-        self.rear = 0
-        self.items = {}
+    def __init__(self)->None:
+        self.front = None  # Apuntador al frente de la cola
+        self.rear = None   # Apuntador al final de la cola
 
-    def enqueue(self, task: str, priority: str):
-        self.items[self.rear] = {
-            "task": task,
-            "priority": priority
-        }
-        self.rear += 1
+    def is_empty(self)->bool:
+        return self.front is None
 
-    def dequeue(self, priority: str): 
-        priority = priority.capitalize()
-        for i in range(self.front, self.rear):
-            if self.items[i]["priority"] == priority:
-                item = self.items[i]
-                new_items = {}
-                new_rear = 0
-                for j in range(self.front, self.rear):
-                    if j == i:
-                        continue
-                    new_items[new_rear] = self.items[j]
-                    new_rear += 1
-                self.items = new_items
-                self.front = 0
-                self.rear = new_rear
-                return item
-        return None 
+    def enqueue(self, task, priority):
+        new_node = Node(task, priority)
+        if self.is_empty():
+            self.front = self.rear = new_node
+        else:
+            self.rear.next = new_node
+            self.rear = new_node
 
-    def is_empty(self):
-        return self.front == self.rear
+    def dequeue(self, priority:str):
+        if self.is_empty():
+            return None
 
-    def to_list(self):
-        return [self.items[i] for i in range(self.front, self.rear)]
+        current = self.front
+        previous = None
 
-    def remove(self, task_description: str) -> bool:
-        new_items = {}
-        new_rear = 0
-        removed = False
+        while current:
+            if current.priority == priority:
+                if previous is None:
+                    # El nodo a eliminar es el primero
+                    self.front = current.next
+                else:
+                    previous.next = current.next
 
-        for i in range(self.front, self.rear):
-            if self.items[i]["task"] == task_description and not removed:
-                removed = True
-                continue
-            new_items[new_rear] = self.items[i]
-            new_rear += 1
+                if current == self.rear:
+                    self.rear = previous
 
-        self.items = new_items
-        self.front = 0
-        self.rear = new_rear
-        return removed
+                return {"task": current.task, "priority": current.priority}
+
+            previous = current
+            current = current.next
+
+        return None
+
+    def to_list(self)->list:
+       # Convierte la cola a una lista de diccionarios.
+        result = []
+        current = self.front
+        while current:
+            result.append({"task": current.task, "priority": current.priority})
+            current = current.next
+        return result
+
+    def remove(self, task_description:str):
+        if self.is_empty():
+            return False
+
+        current = self.front
+        previous = None
+
+        while current:
+            if current.task == task_description:
+                if previous is None:
+                    self.front = current.next
+                else:
+                    previous.next = current.next
+
+                if current == self.rear:
+                    self.rear = previous
+
+                return True
+
+            previous = current
+            current = current.next
+
+        return False
 
 task_queue = Queue()  #una sola cola
 
-# Función para guardar las colas en archivo JSON
+# Función para guardar las cola en archivo JSON
 def save_queue():
-    data = task_queue.to_list() 
+    data = []
+    current = task_queue.front
+    while current:
+        data.append({
+            'task': current.task,
+            'priority': current.priority
+        })
+        current = current.next
     with open('queue.json', 'w', encoding='utf-8') as f:
         json.dump(data, f, ensure_ascii=False, indent=2)
 
@@ -68,8 +101,6 @@ def load_queue():
         with open('queue.json', 'r', encoding='utf-8') as f:
             data = json.load(f)
             for item in data:
-                task = item.get('task')
-                priority = item.get('priority')
-                task_queue.enqueue(task, priority)
+                task_queue.enqueue(item['task'], item['priority'])
     except FileNotFoundError:
-        pass  # Si el archivo no existe, simplemente no hacemos nada
+        pass # Si el archivo no existe, simplemente no hacemos nada
